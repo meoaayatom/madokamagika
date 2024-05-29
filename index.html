@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <style type="text/css">
+        .item {
+            width: 150px;
+            height: 150px;
+            background-size:100%;
+            background-repeat: no-repeat;
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            height: 200px;
+            width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .active{
+            border: 5px pink;
+        }
+        body{
+            background-image: url(7.jpg);
+            background-size: 100% 100%;
+            height: 1295px;
+        }
+        .scr{
+            color: white;
+            font-size: 40px;
+        }
+
+
+        
+    </style>
+</head>
+<body>
+    <div class="scr">счет: <span class="score"></span></div>
+    <div class="row">
+
+    </div>
+
+    <script type="text/javascript">
+    //див-родитель
+    let row = document.querySelector(".row");
+
+    //хранение картинок
+    let images = ["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg", "6.jpg"];
+
+    let past_item = null
+
+    let score = document.querySelector(".score")
+    let s = 0
+
+    let getRandom = function(num){
+        let rand = Math.random() * num 
+        let round = Math.round(rand) 
+
+        return round
+    }
+
+    console.log(images.length)
+
+    for(let i = 0; i < 12; i++){
+
+        let item = document.createElement('div')
+        row.appendChild(item)
+        item.classList.add("item")
+
+        let randomIndex = getRandom(images.length - 1)
+
+        item.style.backgroundImage = "url(" + images[randomIndex] + ")" 
+
+        item.images = images[randomIndex]
+
+        images.splice(randomIndex , 1)
+
+        item.onclick = function(){
+            item.classList.add("active")
+
+            if(past_item == null){
+                past_item = item
+            }
+            else if(item.images == past_item.images){
+                item.style.display = "none"
+                past_item.style.display = "none"
+                past_item = null
+                s = s + 1
+                score.innerHTML = s
+                 if(s == 6){
+                    timer()
+                }
+            }
+            else if(item.images != past_item.images){
+                past_item.classList.remove("active")
+                item.classList.remove("active")
+                past_item = null
+            }   
+        }
+        
+
+
+    }
+    let timer = function(){
+            if(s == 6){
+                alert("you win")
+                clearTimeout(timer)
+            } else if (s < 6){
+                alert("you loose")
+                clearTimeout(timer)
+            }
+        }
+        setTimeout(timer, 10000)
+
+
+
+
+    
+    </script>
+</body>
+</html>
